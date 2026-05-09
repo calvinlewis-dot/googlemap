@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Google Maps Markers with Bounce & Drop</title>
+
+  <style>
+    /* Map container must have height */
+    #map {
+      height: 100vh;
+      width: 100%;
+    }
+  </style>
+
+  
+</head>
+<body>
+  <div id="map"></div>
+
+  
+
+  <!-- Load Google Maps API (replace YOUR_API_KEY with your key) -->
+  <script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6myHzS10YXdcazAFalmXvDkrYCp5cLc8&libraries=maps,marker&v=weekly&internal_usage_attribution_ids=gmp_git_jsapisamples_v1_web-components&callback=initMap">
+  </script>
+  <script async src="//jsfiddle.net/5u97fnLk/embed/"></script>
+
+  <script>
+    
+let map;
+    let markers = [];
+
+    function initMap() {
+      // Create map centered on a location
+      map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: 42.376731, lng: -72.519884 }, // Amherst
+        zoom: 16,
+         mapTypeId: google.maps.MapTypeId.SATELLITE, // Start in satellite view
+         
+      });
+
+      // Array of marker data
+      const locations = [
+        { position: { lat: 42.376731, lng: -72.519884 }, title: "Amherst Center" },
+      { position: { lat: 42.37645, lng: -72.52006 }, title: "The Works Cafe" },
+      { position: { lat: 42.37571, lng: -72.52058 }, title: "Amherst Coffee" },
+      { position: { lat: 42.377192, lng: -72.519690 }, title: "Coronation Cafe" },
+      { position: { lat: 42.377518, lng: -72.518879 }, title: "Masuda's Cafe" }
+      ];
+
+      // Create markers with DROP animation
+      locations.forEach((loc, index) => {
+        const marker = new google.maps.Marker({
+          position: loc.position,
+          map: map,
+          title: loc.title,
+          animation: google.maps.Animation.DROP
+        });
+
+        // Add click listener to toggle bounce
+        marker.addListener("click", () => {
+          toggleBounce(marker);
+        });
+
+        markers.push(marker);
+      });
+    }
+
+    // Toggle bounce animation
+    function toggleBounce(marker) {
+      if (marker.getAnimation() !== null) {
+        marker.setAnimation(null);
+      } else {
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+        // Stop bounce after 2 seconds
+        setTimeout(() => marker.setAnimation(null), 2000);
+      }
+    }
+  </script>
+</body>
+</html>
